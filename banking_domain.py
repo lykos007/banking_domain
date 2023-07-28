@@ -63,36 +63,63 @@ class SavingsAccount(Account):
             print("Insufficient Balance. Minimum Balance not maintained.")
 
 
+class BankApplication:
+    def run(self):
+        print("Welcome to the Bank Application!")
+        self.create_customer()
+        self.create_account()
+        self.perform_transactions()
+
+    def create_customer(self):
+        print("\nCreating Customer...")
+        customer_id = input("Enter Customer ID: ")
+        cust_name = input("Enter Customer Name: ")
+        address = input("Enter Customer Address: ")
+        contact_details = input("Enter Customer Contact Details: ")
+        self.customer = Customer(customer_id, cust_name, address, contact_details)
+
+    def create_account(self):
+        print("\nCreating Account...")
+        ifsc_code = input("Enter IFSC Code: ")
+        bank_name = input("Enter Bank Name: ")
+        branch_name = input("Enter Branch Name: ")
+        location = input("Enter Location: ")
+        account_id = input("Enter Account ID: ")
+        balance = float(input("Enter Initial Balance: "))
+        account_type = input("Enter Account Type (Savings or Current): ")
+
+        if account_type.lower() == 'savings':
+            min_balance = float(input("Enter Minimum Balance for Savings Account: "))
+            self.account = SavingsAccount(ifsc_code, bank_name, branch_name, location, account_id, self.customer, balance, min_balance)
+        elif account_type.lower() == 'current':
+            self.account = Account(ifsc_code, bank_name, branch_name, location, account_id, self.customer, balance)
+        else:
+            print("Invalid account type. Creating a normal Account.")
+            self.account = Account(ifsc_code, bank_name, branch_name, location, account_id, self.customer, balance)
+
+    def perform_transactions(self):
+        while True:
+            print("\n1. Deposit")
+            print("2. Withdraw")
+            print("3. Get Account Information")
+            print("4. Exit")
+            choice = int(input("Enter your choice: "))
+
+            if choice == 1:
+                amount = float(input("Enter the amount to deposit: "))
+                is_savings = input("Is it a Savings Account? (true/false): ")
+                self.account.deposit(amount, is_savings)
+            elif choice == 2:
+                amount = float(input("Enter the amount to withdraw: "))
+                self.account.withdraw(amount)
+            elif choice == 3:
+                self.account.getAccountInfo()
+            elif choice == 4:
+                print("Exiting Bank Application.")
+                break
+            else:
+                print("Invalid choice. Please try again.")
+
 if __name__ == "__main__":
-    # Create a Customer object
-    customer1 = Customer("C1001", "John Doe", "123 Main Street", "john.doe@example.com")
-
-    # Create an Account object
-    account1 = Account("IFSC123", "MyBank", "MainBranch", "New York", "A12345", customer1, 5000)
-
-    # Get Account Information
-    account1.getAccountInfo()
-
-    # Deposit
-    account1.deposit(2000, 'true')
-
-    # Withdraw
-    account1.withdraw(500)
-
-    # Get Balance
-    account1.getBalance()
-
-    # Create a SavingsAccount object
-    savings_account1 = SavingsAccount("IFSC456", "MyBank", "Branch2", "Chicago", "A67890", customer1, 3000, 1000)
-
-    # Get Savings Account Information
-    savings_account1.getAccountInfo()
-
-    # Deposit into Savings Account
-    savings_account1.deposit(2000, 'true')
-
-    # Withdraw from Savings Account
-    savings_account1.withdraw(500)
-
-    # Get Savings Account Balance
-    savings_account1.getBalance()
+    bank_app = BankApplication()
+    bank_app.run()
