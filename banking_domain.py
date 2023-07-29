@@ -86,7 +86,7 @@ class BankApplication:
         location = input("Enter Location: ")
         account_id = input("Enter Account ID: ")
         balance = float(input("Enter Initial Balance: "))
-        account_type = input("Enter Account Type (Savings or Current): ")
+        account_type = input("Enter Account Type (Savings or Checking): ")
 
         if account_type.lower() == 'savings':
             min_balance = float(input("Enter Minimum Balance for Savings Account: "))
